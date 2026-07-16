@@ -1,0 +1,130 @@
+{
+	"name": "psuedo",
+	"properties": {
+		"activities": [
+			{
+				"name": "MigrateOnPremFiles",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 2,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "flight_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "flight_id",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "flight_number",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "flight_number",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "departure_time",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "departure_time",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "arrival_time",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "arrival_time",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_onprem_param",
+						"type": "DatasetReference",
+						"parameters": {
+							"p_filename": {
+								"value": "Dimflight.csv",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_onprem_sink",
+						"type": "DatasetReference",
+						"parameters": {
+							"p_filename": {
+								"value": "Dimflight.csv",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2026-07-07T19:00:10Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

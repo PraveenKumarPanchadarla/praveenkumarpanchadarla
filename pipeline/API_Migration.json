@@ -1,0 +1,121 @@
+{
+	"name": "API_Migration",
+	"properties": {
+		"activities": [
+			{
+				"name": "Firstweb",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": {
+						"value": "https://raw.githubusercontent.com/anshlambagit/AnshLambaYoutube/refs/heads/main/ADF_Project/DimAirport.json",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "CopyMigration",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Firstweb",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "HttpReadSettings",
+							"requestMethod": "GET"
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['airport_id']"
+								},
+								"sink": {
+									"path": "$['airport_id']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['airport_name']"
+								},
+								"sink": {
+									"path": "$['airport_name']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['city']"
+								},
+								"sink": {
+									"path": "$['city']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['country']"
+								},
+								"sink": {
+									"path": "$['country']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_src_github",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_sink_github",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2026-07-07T20:31:04Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

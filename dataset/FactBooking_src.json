@@ -1,0 +1,64 @@
+{
+	"name": "FactBooking_src",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_datalake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "sql",
+				"fileSystem": "bronze"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "booking_id",
+				"type": "INT32"
+			},
+			{
+				"name": "passenger_id",
+				"type": "INT32"
+			},
+			{
+				"name": "flight_id",
+				"type": "INT32"
+			},
+			{
+				"name": "airline_id",
+				"type": "INT32"
+			},
+			{
+				"name": "origin_airport_id",
+				"type": "INT32"
+			},
+			{
+				"name": "destination_airport_id",
+				"type": "INT32"
+			},
+			{
+				"name": "booking_date",
+				"type": "DATE"
+			},
+			{
+				"name": "ticket_cost",
+				"type": "DECIMAL",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "flight_duration_mins",
+				"type": "INT32"
+			},
+			{
+				"name": "checkin_status",
+				"type": "UTF8"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
